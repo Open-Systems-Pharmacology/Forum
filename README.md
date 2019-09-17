@@ -8,7 +8,7 @@ By clicking on [Issues](https://github.com/Open-Systems-Pharmacology/Forum/issue
 - **Signup to GitHub**: An account is required to participate and interact in the forum.
 - **Watch**: You can subscribe to the OSP Forum to stay up-to-date with the community and receive updates on new software releases, models as well as forum discussions.
   
-  ![watch](https://help.github.com/assets/images/help/notifications/watcher_picker.gif)
+  ![watch](https://help.github.com/assets/images/help/notifications/watch-repository.png)
 
 ## Contributing
 We encourage any contributions. Check our [contribution guidelines](https://github.com/Open-Systems-Pharmacology/Suite/blob/develop/CONTRIBUTING.md) to learn more on how to contribute to the project.

@@ -1,6 +1,6 @@
 # Discussion forum for the Open Systems Pharmacology Project
 
-By clicking on [Issues](https://github.com/Open-Systems-Pharmacology/Forum/issues) in this repository, you will open a list of all discussions already started at www.open-systems-pharmacology.org. You may start a new discussion, request, question etc. by simply clicking the **[New Issue](https://github.com/Open-Systems-Pharmacology/Forum/issues/new)** button.
+By clicking on [Discussions](https://github.com/Open-Systems-Pharmacology/Forum/discussions) in this repository, you will open a list of all discussions already started at www.open-systems-pharmacology.org. You may start a new discussion, request, question etc. by simply clicking the **[New discussion](https://github.com/Open-Systems-Pharmacology/Forum/discussions/new)** button.
 
 We encourage everyone to read the [documentation of the OSPS](https://docs.open-systems-pharmacology.org/) prior to opening a new issue. 
 

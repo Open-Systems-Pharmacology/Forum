@@ -1,5 +1,5 @@
 ---
-name: Feature request
+name: Use Discussions instead of Issues
 about: Issues are now Discussions
 title: ''
 labels: ''

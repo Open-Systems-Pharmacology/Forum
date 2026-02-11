@@ -187,7 +187,8 @@ jobs:
                 normB += vecB[i] * vecB[i];
               }
               
-              return dotProduct / (Math.sqrt(normA) * Math.sqrt(normB));
+              const denominator = Math.sqrt(normA) * Math.sqrt(normB);
+              return denominator === 0 ? 0 : dotProduct / denominator;
             }
             
             // Function to use simple keyword matching as fallback

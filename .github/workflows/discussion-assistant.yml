@@ -292,7 +292,8 @@ jobs:
               if (process.env.OPENAI_API_KEY) {
                 console.log('Using OpenAI for similarity analysis');
                 similarDiscussions = await calculateSimilarityOpenAI(newText, existingDiscussions);
-              } else {
+              }
+              if (!similarDiscussions || similarDiscussions.length === 0) {
                 console.log('Using keyword matching for similarity analysis');
                 similarDiscussions = calculateSimilarityKeywords(newText, existingDiscussions);
               }

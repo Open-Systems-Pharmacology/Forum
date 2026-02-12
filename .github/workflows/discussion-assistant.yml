@@ -302,14 +302,13 @@ jobs:
               if (similarDiscussions.length > 0) {
                 console.log(`Found ${similarDiscussions.length} similar discussions`);
                 
-                let commentBody = '🤖 **Discussion Assistant**: I found some similar discussions that might be helpful:\n\n';
-                
                 for (const item of similarDiscussions) {
                   const { discussion, similarity } = item;
                   const percentage = Math.round(similarity * 100);
                   const answeredTag = discussion.answer ? ' ✅ (Answered)' : '';
                   
-                  commentBody += `- [${discussion.title}](${discussion.url}) (${percentage}% similar)${answeredTag}\n`;
+                  const safeTitle = discussion.title.replace(/\[/g, '\\[').replace(/\]/g, '\\]');
+                  commentBody += `- [${safeTitle}](${discussion.url}) (${percentage}% similar)${answeredTag}\n`;
                 }
                 
                 // Post the comment using GraphQL

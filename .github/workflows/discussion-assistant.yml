@@ -97,7 +97,7 @@ jobs:
                 cursor = result.repository.discussions.pageInfo.endCursor;
                 
                 // Limit to prevent excessive API calls (adjust as needed)
-                if (allDiscussions.length >= 500) break;
+                if (allDiscussions.length >= 1000) break;
               }
               
               console.log(`Fetched ${allDiscussions.length} existing discussions (excluding ignored categories)`);
@@ -119,8 +119,9 @@ jobs:
                 // Prepare texts for batch embedding with indices
                 const existingTexts = existingDiscussions.map(d => `${d.title}\n${d.body || ''}`);
                 
-                // Process in batches of 100
-                const BATCH_SIZE = 100;
+                // Process in batches of 50
+                const BATCH_SIZE = 50;
+                const MAX_RETRIES = 3;
                 const discussionEmbeddings = []; // Array of {discussion, embedding} pairs
                 
                 for (let i = 0; i < existingTexts.length; i += BATCH_SIZE) {
@@ -128,25 +129,33 @@ jobs:
                   const batchEnd = Math.min(i + BATCH_SIZE, existingTexts.length);
                   const batch = existingTexts.slice(batchStart, batchEnd);
                   
-                  try {
-                    const batchEmbeddings = await getEmbedding(batch, apiKey);
-                    if (!Array.isArray(batchEmbeddings) || batchEmbeddings.length !== batch.length) {
-                      throw new Error(`Expected ${batch.length} embeddings, got ${batchEmbeddings?.length || 0}`);
+                  let success = false;
+                  for (let attempt = 1; attempt <= MAX_RETRIES && !success; attempt++) {
+                    try {
+                      const batchEmbeddings = await getEmbedding(batch, apiKey);
+                      if (!Array.isArray(batchEmbeddings) || batchEmbeddings.length !== batch.length) {
+                        throw new Error(`Expected ${batch.length} embeddings, got ${batchEmbeddings?.length || 0}`);
+                      }
+                      // Map embeddings back to their discussions
+                      for (let j = 0; j < batchEmbeddings.length; j++) {
+                        discussionEmbeddings.push({
+                          discussion: existingDiscussions[batchStart + j],
+                          embedding: batchEmbeddings[j]
+                        });
+                      }
+                      success = true;
+                    } catch (batchError) {
+                      console.error(`Error processing batch ${Math.floor(i / BATCH_SIZE) + 1} (discussions ${batchStart}-${batchEnd - 1}), attempt ${attempt}/${MAX_RETRIES}:`, batchError);
+                      if (attempt < MAX_RETRIES) {
+                        const backoff = Math.pow(2, attempt) * 1000;
+                        console.log(`Retrying in ${backoff / 1000}s...`);
+                        await new Promise(resolve => setTimeout(resolve, backoff));
+                      }
                     }
-                    // Map embeddings back to their discussions
-                    for (let j = 0; j < batchEmbeddings.length; j++) {
-                      discussionEmbeddings.push({
-                        discussion: existingDiscussions[batchStart + j],
-                        embedding: batchEmbeddings[j]
-                      });
-                    }
-                    // Small delay between batches to avoid rate limits
-                    if (i + BATCH_SIZE < existingTexts.length) {
-                      await new Promise(resolve => setTimeout(resolve, 500));
-                    }
-                  } catch (batchError) {
-                    console.error(`Error processing batch ${Math.floor(i / BATCH_SIZE) + 1} (discussions ${batchStart}-${batchEnd - 1}):`, batchError);
-                    // Skip this batch and continue with next one
+                  }
+                  // Delay between batches to avoid rate limits
+                  if (i + BATCH_SIZE < existingTexts.length) {
+                    await new Promise(resolve => setTimeout(resolve, 1000));
                   }
                 }
                 
@@ -197,7 +206,7 @@ jobs:
                     ? text.map(t => t.substring(0, 8000)) 
                     : text.substring(0, 8000)
                 }),
-                signal: AbortSignal.timeout(30000) // 30s timeout
+                signal: AbortSignal.timeout(60000) // 60s timeout
               });
               
               if (!response.ok) {

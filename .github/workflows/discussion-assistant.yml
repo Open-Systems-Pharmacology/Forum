@@ -310,6 +310,8 @@ jobs:
               // Post comment if similar discussions found
               if (similarDiscussions.length > 0) {
                 console.log(`Found ${similarDiscussions.length} similar discussions`);
+
+                let commentBody = '🤖 **Discussion Assistant**: I found some similar discussions that might be helpful:\n\n';
                 
                 for (const item of similarDiscussions) {
                   const { discussion, similarity } = item;

@@ -10,7 +10,9 @@ We encourage everyone to read the [documentation of the OSPS](https://docs.open-
 - **Signup to GitHub**: An account is required to participate and interact in the forum.
 - **Watch**: You can subscribe to the OSP Forum to stay up-to-date with the community and receive updates on new software releases, models as well as forum discussions.
   
-  ![watch](https://docs.github.com/assets/cb-23049/images/help/notifications-v2/watch-repository-options-custom.png)
+  <img width="350" src="https://github.com/user-attachments/assets/13c4c7fc-4437-48a1-86f4-938515701cde" />   <img width="450" src="https://github.com/user-attachments/assets/8da377f0-2690-43da-9824-bcd2f43ef10e" />
+
+
 
 ## Contributing
 We encourage any contributions. Check our [contribution guidelines](https://github.com/Open-Systems-Pharmacology/Suite/blob/develop/CONTRIBUTING.md) to learn more on how to contribute to the project.
